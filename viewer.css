@@ -781,3 +781,9 @@ html[dir='rtl'] .dropdownToolbarButton {
     height:100%;
     z-index: 3;
 }
+
+@media print {
+  * {
+    display:none;
+  }
+}
