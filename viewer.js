@@ -536,11 +536,12 @@ function Viewer(viewerPlugin, parameters) {
 
     function setButtonClickHandler(buttonId, handler) {
         var button = document.getElementById(buttonId);
-
-        button.addEventListener('click', function () {
-            handler();
-            button.blur();
-        });
+        if(button !== undefined && button !== null) {
+          button.addEventListener('click', function () {
+              handler();
+              button.blur();
+          });
+        }
     }
 
     function init() {
@@ -557,7 +558,7 @@ function Viewer(viewerPlugin, parameters) {
 
             setButtonClickHandler('overlayCloseButton', self.toggleFullScreen);
             setButtonClickHandler('fullscreen', self.toggleFullScreen);
-            setButtonClickHandler('print', self.printDocument);
+
             setButtonClickHandler('presentation', function () {
                 if (!isFullScreen) {
                     self.toggleFullScreen();
@@ -570,7 +571,7 @@ function Viewer(viewerPlugin, parameters) {
             document.addEventListener('mozfullscreenchange', handleFullScreenChange);
             document.addEventListener('MSFullscreenChange', handleFullScreenChange);
 
-            setButtonClickHandler('download', self.download);
+
 
             setButtonClickHandler('zoomOut', self.zoomOut);
             setButtonClickHandler('zoomIn', self.zoomIn);
