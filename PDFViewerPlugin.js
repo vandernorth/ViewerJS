@@ -127,8 +127,8 @@ function PDFViewerPlugin() {
         textLayer.style.width = width + "px";
         textLayer.style.height = height + "px";
 
-        CustomStyle.setProp('transform', textLayer, cssScale);
-        CustomStyle.setProp('transformOrigin', textLayer, '0% 0%');
+        // CustomStyle.setProp('transform', textLayer, cssScale);
+        // CustomStyle.setProp('transformOrigin', textLayer, '0% 0%');
 
         if (getRenderingStatus(page) === RENDERING.RUNNING) {
             // TODO: should be able to cancel that rendering

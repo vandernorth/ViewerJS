@@ -1,4 +1,4 @@
-# 
+#
 # Copyright (C) 2013-2015 KO GmbH <copyright@kogmbh.com>
 #
 # @licstart
@@ -20,7 +20,7 @@
 #
 # @source: http://viewerjs.org/
 # @source: http://github.com/kogmbh/ViewerJS
-# 
+#
 
 project(ViewerJS)
 cmake_minimum_required(VERSION 2.8.6)
@@ -124,7 +124,7 @@ ExternalProject_Add(
     INSTALL_COMMAND ""
 )
 
-set(PDFJS_VERSION v1.1.366)
+set(PDFJS_VERSION v1.3.91)
 ExternalProject_Add(
     PDFjs
     GIT_REPOSITORY https://github.com/mozilla/pdf.js.git
@@ -329,4 +329,3 @@ add_custom_target(wordpress-plugin ALL
     DEPENDS
         ${WORDPRESSZIP}
 )
-
