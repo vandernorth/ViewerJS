@@ -1,3 +1,6 @@
+The viewer uses HTML, CSS, and icons derived from the Mozilla PDF.js project.
+Some icons are derived from the http://www.iconsweets.com/ project under a Creative Commons Attribution 3.0 Unported license.
+
 # ViewerJS
 
 ViewerJS combines a number of excellent open source tools that are built on HTML and javascript. ViewerJS was funded by [NLnet foundation](https://nlnet.nl) and developed by [KO GmbH](http://kogmbh.com).

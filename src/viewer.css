@@ -73,11 +73,11 @@ select {
     -moz-box-shadow:    0px 1px 3px rgba(50, 50, 50, 0.75);
     box-shadow:         0px 1px 3px rgba(50, 50, 50, 0.75);
 
-    background-image: url(images/texture.png), linear-gradient(rgba(69, 69, 69, .95), rgba(82, 82, 82, .99));
-    background-image: url(images/texture.png), -webkit-linear-gradient(rgba(69, 69, 69, .95), rgba(82, 82, 82, .99));
-    background-image: url(images/texture.png), -moz-linear-gradient(rgba(69, 69, 69, .95), rgba(82, 82, 82, .99));
-    background-image: url(images/texture.png), -ms-linear-gradient(rgba(69, 69, 69, .95), rgba(82, 82, 82, .99));
-    background-image: url(images/texture.png), -o-linear-gradient(rgba(69, 69, 69, .95), rgba(82, 82, 82, .99));
+    background-image: url(src/images/texture.png), linear-gradient(rgba(69, 69, 69, .95), rgba(82, 82, 82, .99));
+    background-image: url(src/images/texture.png), -webkit-linear-gradient(rgba(69, 69, 69, .95), rgba(82, 82, 82, .99));
+    background-image: url(src/images/texture.png), -moz-linear-gradient(rgba(69, 69, 69, .95), rgba(82, 82, 82, .99));
+    background-image: url(src/images/texture.png), -ms-linear-gradient(rgba(69, 69, 69, .95), rgba(82, 82, 82, .99));
+    background-image: url(src/images/texture.png), -o-linear-gradient(rgba(69, 69, 69, .95), rgba(82, 82, 82, .99));
 }
 
 #titlebar a, #aboutDialog a, #titlebar a:visited, #aboutDialog a:visited {
@@ -111,11 +111,11 @@ select {
     -moz-box-shadow:    0px -1px 3px rgba(50, 50, 50, 0.75);
     box-shadow:         0px -1px 3px rgba(50, 50, 50, 0.75);
 
-    background-image: url(images/texture.png), linear-gradient(rgba(82, 82, 82, .99), rgba(69, 69, 69, .95));
-    background-image: url(images/texture.png), -webkit-linear-gradient(rgba(82, 82, 82, .99), rgba(69, 69, 69, .95));
-    background-image: url(images/texture.png), -moz-linear-gradient(rgba(82, 82, 82, .99), rgba(69, 69, 69, .95));
-    background-image: url(images/texture.png), -ms-linear-gradient(rgba(82, 82, 82, .99), rgba(69, 69, 69, .95));
-    background-image: url(images/texture.png), -o-linear-gradient(rgba(82, 82, 82, .99), rgba(69, 69, 69, .95));
+    background-image: url(src/images/texture.png), linear-gradient(rgba(82, 82, 82, .99), rgba(69, 69, 69, .95));
+    background-image: url(src/images/texture.png), -webkit-linear-gradient(rgba(82, 82, 82, .99), rgba(69, 69, 69, .95));
+    background-image: url(src/images/texture.png), -moz-linear-gradient(rgba(82, 82, 82, .99), rgba(69, 69, 69, .95));
+    background-image: url(src/images/texture.png), -ms-linear-gradient(rgba(82, 82, 82, .99), rgba(69, 69, 69, .95));
+    background-image: url(src/images/texture.png), -o-linear-gradient(rgba(82, 82, 82, .99), rgba(69, 69, 69, .95));
 }
 
 #toolbar {
@@ -462,7 +462,7 @@ html[dir='rtl'] .splitToolbarButtonSeparator {
         max-width: 120px;
           padding: 4px 2px 4px;
             overflow: hidden;
-              background: url(images/toolbarButton-menuArrows.png) no-repeat;
+              background: url(src/images/toolbarButton-menuArrows.png) no-repeat;
 }
 
 .dropdownToolbarButton > select {
@@ -496,22 +496,22 @@ html[dir='rtl'] .dropdownToolbarButton {
 
 .toolbarButton.fullscreen::before {
     display: inline-block;
-    content: url(images/toolbarButton-fullscreen.png);
+    content: url(src/images/toolbarButton-fullscreen.png);
 }
 
 .toolbarButton.presentation::before {
     display: inline-block;
-    content: url(images/toolbarButton-presentation.png);
+    content: url(src/images/toolbarButton-presentation.png);
 }
 
 .toolbarButton.download::before {
     display: inline-block;
-    content: url(images/toolbarButton-download.png);
+    content: url(src/images/toolbarButton-download.png);
 }
 
 .toolbarButton.print::before {
     display: inline-block;
-    content: url(images/toolbarButton-print.png);
+    content: url(src/images/toolbarButton-print.png);
 }
 
 .toolbarButton.about {
@@ -527,22 +527,22 @@ html[dir='rtl'] .dropdownToolbarButton {
 
 .toolbarButton.zoomOut::before {
     display: inline-block;
-    content: url(images/toolbarButton-zoomOut.png);
+    content: url(src/images/toolbarButton-zoomOut.png);
 }
 
 .toolbarButton.zoomIn::before {
     display: inline-block;
-    content: url(images/toolbarButton-zoomIn.png);
+    content: url(src/images/toolbarButton-zoomIn.png);
 }
 
 .toolbarButton.pageUp::before {
   display: inline-block;
-  content: url(images/toolbarButton-pageUp.png);
+  content: url(src/images/toolbarButton-pageUp.png);
 }
 
 .toolbarButton.pageDown::before {
   display: inline-block;
-  content: url(images/toolbarButton-pageDown.png);
+  content: url(src/images/toolbarButton-pageDown.png);
 }
 
 .toolbarField.pageNumber {
@@ -617,7 +617,7 @@ html[dir='rtl'] .dropdownToolbarButton {
     text-align: center;
 
     background-color: #888;
-    background-image: url(images/texture.png);
+    background-image: url(src/images/texture.png);
 }
 
 #canvasContainer.slideshow {

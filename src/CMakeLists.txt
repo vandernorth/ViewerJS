@@ -78,7 +78,7 @@ if(OVERRULED_VIEWERJS_VERSION)
     set (VIEWERJS_VERSION ${OVERRULED_VIEWERJS_VERSION})
 else()
     # At this point, the version number that is used throughout is defined
-    set(VIEWERJS_VERSION 0.5.10)
+    set(VIEWERJS_VERSION 0.6.0)
 endif()
 message(STATUS "Building ViewerJS version: ${VIEWERJS_VERSION}" )
 
@@ -124,7 +124,7 @@ ExternalProject_Add(
     INSTALL_COMMAND ""
 )
 
-set(PDFJS_VERSION v1.3.91)
+set(PDFJS_VERSION v1.4.20)
 ExternalProject_Add(
     PDFjs
     GIT_REPOSITORY https://github.com/mozilla/pdf.js.git
