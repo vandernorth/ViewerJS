@@ -7,6 +7,7 @@ Compared to the original (http://viewerjs.org/) this fork:
 - Can show image files (thanks to https://github.com/Ryusei217/ViewerJS)
 - Can be build with node (instead of make/cmake)
 - Is easier to use with node-js/express-js
+- No inline style and inline script tags in index.html
 - Can be found on NPM (node-viewerjs)
 
 ==============================================================================
