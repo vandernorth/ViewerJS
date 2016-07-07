@@ -7,13 +7,14 @@ function ImageViewerPlugin() {
 		currentPage = 1;
 
 	function initCSS() {
-		var pluginCSS;
+		/*var pluginCSS;
 
-		pluginCSS = /**@type{!HTMLStyleElement}*/(document.createElementNS(document.head.namespaceURI, 'style'));
+		pluginCSS = (document.createElementNS(document.head.namespaceURI, 'style'));
 		pluginCSS.setAttribute('media', 'screen, print, handheld, projection');
 		pluginCSS.setAttribute('type', 'text/css');
 		pluginCSS.appendChild(document.createTextNode(ImageViewerPlugin_css));
 		document.head.appendChild(pluginCSS);
+		*/
 	}
 	
 	function initButtons() {

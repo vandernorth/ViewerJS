@@ -1,7 +1,20 @@
+# ViewerJS for node
+
+## Changes
+Compared to the original (http://viewerjs.org/) this fork:
+- Will show a warning message if the document is not supported
+- Can play video files (thanks to https://github.com/Ryusei217/ViewerJS)
+- Can show image files (thanks to https://github.com/Ryusei217/ViewerJS)
+- Can be build with node (instead of make/cmake)
+- Is easier to use with node-js/express-js
+- Can be found on NPM (node-viewerjs)
+
+==============================================================================
+# Original Readme
 The viewer uses HTML, CSS, and icons derived from the Mozilla PDF.js project.
 Some icons are derived from the http://www.iconsweets.com/ project under a Creative Commons Attribution 3.0 Unported license.
 
-# ViewerJS
+## ViewerJS
 
 ViewerJS combines a number of excellent open source tools that are built on HTML and javascript. ViewerJS was funded by [NLnet foundation](https://nlnet.nl) and developed by [KO GmbH](http://kogmbh.com).
 

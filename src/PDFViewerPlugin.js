@@ -44,14 +44,14 @@ function PDFViewerPlugin() {
             loadScript('./pdf.js');
             loadScript('./ui_utils.js');
             loadScript('./text_layer_builder.js');
-            loadScript('./pdfjsversion.js', callback);
+            //loadScript('./pdfjsversion.js', callback);
         });
 
-        pluginCSS = /**@type{!HTMLStyleElement}*/(document.createElementNS(document.head.namespaceURI, 'style'));
-        pluginCSS.setAttribute('media', 'screen, print, handheld, projection');
-        pluginCSS.setAttribute('type', 'text/css');
-        pluginCSS.appendChild(document.createTextNode(PDFViewerPlugin_css));
-        document.head.appendChild(pluginCSS);
+        //pluginCSS = /**@type{!HTMLStyleElement}*/(document.createElementNS(document.head.namespaceURI, 'style'));
+        //pluginCSS.setAttribute('media', 'screen, print, handheld, projection');
+        //pluginCSS.setAttribute('type', 'text/css');
+        //pluginCSS.appendChild(document.createTextNode(PDFViewerPlugin_css));
+        //document.head.appendChild(pluginCSS);
     }
 
     var self = this,

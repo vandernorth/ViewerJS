@@ -1,4 +1,98 @@
 /**
+ * Copyright (C) 2013-2014 KO GmbH <copyright@kogmbh.com>
+ *
+ * @licstart
+ * This file is part of ViewerJS.
+ *
+ * ViewerJS is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Affero General Public License (GNU AGPL)
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
+ *
+ * ViewerJS is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with ViewerJS.  If not, see <http://www.gnu.org/licenses/>.
+ * @licend
+ *
+ * @source: http://viewerjs.org/
+ * @source: http://github.com/kogmbh/ViewerJS
+ */
+
+@namespace cursor url(urn:webodf:names:cursor);
+
+.caret {
+    opacity: 0 !important;
+}
+.page {
+    margin: 7px auto 7px auto;
+    position: relative;
+    overflow: hidden;
+    background-clip: content-box;
+    background-color: white;
+    
+    box-shadow:         0px 0px 7px rgba(0, 0, 0, 0.75);
+    -webkit-box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow:    0px 0px 7px rgba(0, 0, 0, 0.75);
+    -ms-box-shadow:    0px 0px 7px rgba(0, 0, 0, 0.75);
+    -o-box-shadow:    0px 0px 7px rgba(0, 0, 0, 0.75);
+}
+
+.textLayer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  color: #000;
+  font-family: sans-serif;
+  overflow: hidden;
+}
+
+.textLayer > div {
+  color: transparent;
+  position: absolute;
+  line-height: 1;
+  white-space: pre;
+  cursor: text;
+}
+
+::selection { background:rgba(0,0,255,0.3); }
+::-moz-selection { background:rgba(0,0,255,0.3); }
+
+#image {
+    transform-origin: top left; /* IE 10+, Firefox, etc. */
+    -webkit-transform-origin: top left; /* Chrome */
+    -ms-transform-origin: top left; /* IE 9 */
+}
+#image.rotate90 {
+    transform: rotate(90deg) translateY(-100%);
+    -webkit-transform: rotate(90deg) translateY(-100%);
+    -ms-transform: rotate(90deg) translateY(-100%);
+}
+#image.rotate180 {
+    transform: rotate(180deg) translate(-100%,-100%);
+    -webkit-transform: rotate(180deg) translate(-100%,-100%);
+    -ms-transform: rotate(180deg) translateX(-100%,-100%);
+}
+#image.rotate270 {
+    transform: rotate(270deg) translateX(-100%);
+    -webkit-transform: rotate(270deg) translateX(-100%);
+    -ms-transform: rotate(270deg) translateX(-100%);
+}
+
+.flipHorizontal {
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: FlipH;
+    -ms-filter: "FlipH";
+}
+/**
  * Copyright (C) 2012-2015 KO GmbH <copyright@kogmbh.com>
  *
  * @licstart
