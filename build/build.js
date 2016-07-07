@@ -16,28 +16,23 @@ shell.cp(path.resolve(sourceDir, 'example.local.css'), releaseDir);
 shell.cp(path.resolve(sourcePdf, './build/pdf.js'), releaseDir);
 shell.cp(path.resolve(sourcePdf, './build/pdf.worker.js'), releaseDir);
 shell.cp(path.resolve(sourcePdf, './web/compatibility.js'), releaseDir);
-//shell.cp(path.resolve(sourcePdf, './web/ui_utils.js'),           releaseDir);
-//shell.cp(path.resolve(sourcePdf, './web/text_layer_builder.js'),   releaseDir);
-
 shell.cp(path.resolve(sourceDir, 'ODFViewerPlugin.js'), releaseDir);
 shell.cp(path.resolve(sourceDir, 'PDFViewerPlugin.js'), releaseDir);
 shell.cp(path.resolve(sourceDir, 'ImageViewerPlugin.js'), releaseDir);
 shell.cp(path.resolve(sourceDir, 'MultimediaViewerPlugin.js'), releaseDir);
 shell.cp(path.resolve(sourceDir, 'UnknownFilePlugin.js'), releaseDir);
 
-shell.cat([file('additionals.js'),
-    //file('ODFViewerPlugin.js'),
-    //file('PDFViewerPlugin.js'),
-    //file('ImageViewerPlugin.js'),
-    //file('MultimediaViewerPlugin.js'),
-    file('viewer.js'),
-    file('PluginLoader.js')])
+shell
+    .cat([file('additionals.js'),
+        file('viewer.js'),
+        file('PluginLoader.js')])
     .to(path.resolve(releaseDir, 'viewer.js'));
 
-shell.cat([file('ODFViewerPlugin.css'),
-    file('PDFViewerPlugin.css'),
-    file('ImageViewerPlugin.css'),
-    file('viewer.css')
-    //,file('viewerTouch.css')
-])
+shell
+    .cat([file('ODFViewerPlugin.css'),
+        file('PDFViewerPlugin.css'),
+        file('ImageViewerPlugin.css'),
+        file('viewer.css')
+        //,file('viewerTouch.css')
+    ])
     .to(path.resolve(releaseDir, 'viewer.css'));
