@@ -119,7 +119,7 @@ function Viewer(viewerPlugin, parameters) {
         aboutButton.id = "about";
         aboutButton.className = "toolbarButton textButton about";
         aboutButton.title = "About";
-        aboutButton.innerHTML = "ViewerJS"
+        aboutButton.innerHTML = "ViewerJS";
         toolbarRight.appendChild(aboutButton);
 
         // Attach events to the above
@@ -265,8 +265,7 @@ function Viewer(viewerPlugin, parameters) {
     }
 
     this.initialize = function () {
-        var initialScale,
-            element;
+        var initialScale;
 
         initialScale = readZoomParameter(parameters.zoom);
 
@@ -359,7 +358,7 @@ function Viewer(viewerPlugin, parameters) {
      */
     this.printDocument = function() {
         window.print();
-    }
+    };
 
     /**
      * Toggles the fullscreen state of the viewer
@@ -499,7 +498,6 @@ function Viewer(viewerPlugin, parameters) {
     }
 
     /**
-     * @param {!boolean} timed Fade after a while
      */
     function showToolbars() {
         titlebar.classList.add('viewer-touched');
@@ -607,7 +605,7 @@ function Viewer(viewerPlugin, parameters) {
                 }
             }, true);
 
-            window.addEventListener('resize', function (evt) {
+            window.addEventListener('resize', function () {
                 if (initialized &&
                           (document.getElementById('pageWidthOption').selected ||
                           document.getElementById('pageAutoOption').selected)) {
