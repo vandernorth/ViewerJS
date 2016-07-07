@@ -32,6 +32,7 @@ shell
     .cat([file('ODFViewerPlugin.css'),
         file('PDFViewerPlugin.css'),
         file('ImageViewerPlugin.css'),
+        file('UnknownFilePlugin.css'),
         file('viewer.css')
         //,file('viewerTouch.css')
     ])

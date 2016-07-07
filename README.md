@@ -10,7 +10,16 @@ Compared to the original (http://viewerjs.org/) this fork:
 - No inline style and inline script tags in index.html
 - Can be found on NPM (node-viewerjs)
 
-==============================================================================
+## How to use with express
+```javascript
+
+var express = require('express'),
+    app     = express();
+
+app.use('/viewer', express.static('node_modules/node-viewerjs/release'));
+```
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Original Readme
 The viewer uses HTML, CSS, and icons derived from the Mozilla PDF.js project.
 Some icons are derived from the http://www.iconsweets.com/ project under a Creative Commons Attribution 3.0 Unported license.
@@ -32,24 +41,6 @@ PDF.js is a library created by Andreas Gal and others at Mozilla Labs. It is an 
 ### Examples and more
 
 You can find additional information, some usage guides, and live examples at [the project homepage](http://viewerjs.org).
-
-### Building
-
-ViewerJS uses [`cmake`](http://cmake.org/). Also make sure that [`nodejs`](https://nodejs.org/) and [`npm`](https://www.npmjs.com/) is installed to build PDF.js. Just follow these steps:
-
-```bash
-git clone git@github.com:kogmbh/ViewerJS.git
-mkdir build
-cd build
-cmake ../ViewerJS
-make
-```
-
-You will find the following two products in the build directory if everything goes well:
-- `viewerjs-{x.y.z}.zip`
-- `viewerjs-wordpress-{x.y.z}.zip`
-
-... where `{x.y.z}` denotes the version.
 
 ### License
 

@@ -23,7 +23,7 @@ function UnknownFilePlugin() {
     this.initialize = function ( viewerElement, documentUrl ) {
         divElement = document.createElement("div");
         divElement.setAttribute('class', 'unknown-file');
-        divElement.innerHTML = 'This file cannot be previewed using your browser. <br><a href="' + documentUrl + '">Click here to download</a>';
+        divElement.innerHTML = 'This file cannot be previewed using your browser. <br><br><a class="download-button" href="' + documentUrl + '">Click here to download</a>';
 
         viewerElement.appendChild(divElement);
         viewerElement.style.overflow = "auto";
