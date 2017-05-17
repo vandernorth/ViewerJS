@@ -37,3 +37,5 @@ shell
         //,file('viewerTouch.css')
     ])
     .to(path.resolve(releaseDir, 'viewer.css'));
+
+console.info('Build Ok');

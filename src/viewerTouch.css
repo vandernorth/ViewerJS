@@ -23,35 +23,39 @@
  */
 
 #canvasContainer {
-    top: 0;
+    top:    0;
     bottom: 0;
 }
 
 #overlayNavigator {
-    height: 100px;
+    height:         100px;
     pointer-events: none;
 }
+
 #nextPage, #previousPage {
     pointer-events: all;
 }
 
 #titlebar, #toolbarContainer {
-    background-color: rgba(0, 0, 0, 0.6);
-    background-image: none;
+    background-color:   rgba(0, 0, 0, 0.6);
+    background-image:   none;
     -webkit-transition: all 0.5s;
-    -moz-transition: all 0.5s;
-    transition: all 0.5s;
+    -moz-transition:    all 0.5s;
+    transition:         all 0.5s;
 }
 
 #titlebar {
     top: -32px;
 }
+
 #titlebar.viewer-touched {
     top: 0px;
 }
+
 #toolbarContainer {
     bottom: -32px;
 }
+
 #toolbarContainer.viewer-touched {
     bottom: 0px;
 }

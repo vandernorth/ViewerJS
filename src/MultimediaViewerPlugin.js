@@ -1,87 +1,90 @@
 /**
  * Multimedia Viewer Plugin using Video.js
- * 
+ *
  * @author Christoph Haas <christoph.h@sprinternet.at>
  */
 function MultimediaViewerPlugin() {
-	"use strict";
+    "use strict";
 
-	var videoElement = undefined,
-		videoSource = undefined,
-		self = this;
+    var videoElement = undefined,
+        videoSource  = undefined,
+        self         = this;
 
-	this.initialize = function (viewerElement, documentUrl) {
-		if(window.mimetype.indexOf("audio/") === 0) {	
-			videoElement=document.createElement("audio");
-			videoElement.setAttribute('poster', 'images/musicbg.png');
-		} else {
-			videoElement=document.createElement("video");
-		}
-		videoElement.setAttribute('preload', 'auto');
-		videoElement.setAttribute('id', 'multimedia_viewer');
-		videoElement.setAttribute('controls', 'controls');
-		videoElement.setAttribute('class', 'video-js vjs-default-skin');
-		
-		videoSource=document.createElement("source");
-		videoSource.setAttribute('src', documentUrl);
-		videoSource.setAttribute('type', window.mimetype);
-		videoElement.appendChild(videoSource);
+    this.initialize = function ( viewerElement, documentUrl ) {
+        if ( window.mimetype.indexOf("audio/") === 0 ) {
+            videoElement = document.createElement("audio");
+            videoElement.setAttribute('poster', 'images/musicbg.png');
+        } else {
+            videoElement = document.createElement("video");
+        }
+        videoElement.setAttribute('preload', 'auto');
+        videoElement.setAttribute('id', 'multimedia_viewer');
+        videoElement.setAttribute('controls', 'controls');
+        videoElement.setAttribute('class', 'video-js vjs-default-skin');
 
-		viewerElement.appendChild(videoElement);
-		viewerElement.style.overflow = "auto";
-		
-		// init viewerjs
-		videojs(document.getElementById('multimedia_viewer'), {controls:'enabled', techOrder:['flash','html5']}, function() {
-		  // This is functionally the same as the previous example.
-		});
+        videoSource = document.createElement("source");
+        videoSource.setAttribute('src', documentUrl);
+        videoSource.setAttribute('type', window.mimetype);
+        videoElement.appendChild(videoSource);
 
-		self.onLoad();
-	};
+        viewerElement.appendChild(videoElement);
+        viewerElement.style.overflow = "auto";
 
-	this.isSlideshow = function () {
-		return false;
-	};
+        // init viewerjs
+        videojs(document.getElementById('multimedia_viewer'), {
+            controls:  'enabled',
+            techOrder: ['flash', 'html5']
+        }, function () {
+            // This is functionally the same as the previous example.
+        });
 
-	this.onLoad = function () {
-	};
+        self.onLoad();
+    };
 
-	this.fitToWidth = function (width) {
-	};
+    this.isSlideshow = function () {
+        return false;
+    };
 
-	this.fitToHeight = function (height) {
-	};
+    this.onLoad = function () {
+    };
 
-	this.fitToPage = function (width, height) {
-	};
+    this.fitToWidth = function ( width ) {
+    };
 
-	this.fitSmart = function (width) {
-	};
+    this.fitToHeight = function ( height ) {
+    };
 
-	this.getZoomLevel = function () {
-	};
+    this.fitToPage = function ( width, height ) {
+    };
 
-	this.setZoomLevel = function (value) {
-	};
+    this.fitSmart = function ( width ) {
+    };
 
-	// return a list of tuples (pagename, pagenode)
-	this.getPages = function () {
-		return [videoElement];
-	};
+    this.getZoomLevel = function () {
+    };
 
-	this.showPage = function (n) {
-		// hide middle toolbar
-		document.getElementById('toolbarMiddleContainer').style.visibility = "hidden";
-	};
+    this.setZoomLevel = function ( value ) {
+    };
 
-	this.getPluginName = function () {
-		return "MultimediaViewerPlugin";
-	};
+    // return a list of tuples (pagename, pagenode)
+    this.getPages = function () {
+        return [videoElement];
+    };
 
-	this.getPluginVersion = function () {
-		return "From Source";
-	};
+    this.showPage = function ( n ) {
+        // hide middle toolbar
+        document.getElementById('toolbarMiddleContainer').style.visibility = "hidden";
+    };
 
-	this.getPluginURL = function () {
-		return "https://sprinternet.at";
-	};
+    this.getPluginName = function () {
+        return "MultimediaViewerPlugin";
+    };
+
+    this.getPluginVersion = function () {
+        return "From Source";
+    };
+
+    this.getPluginURL = function () {
+        return "https://sprinternet.at";
+    };
 }

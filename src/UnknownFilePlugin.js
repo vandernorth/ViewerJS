@@ -1,8 +1,8 @@
 function UnknownFilePlugin() {
     "use strict";
 
-    var divElement  = undefined,
-        self        = this;
+    var divElement = undefined,
+        self       = this;
 
     function initCSS() {
     }

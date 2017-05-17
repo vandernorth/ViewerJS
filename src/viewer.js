@@ -44,116 +44,54 @@
 
 /*global document, window*/
 
-function Viewer(viewerPlugin, parameters) {
+function Viewer( viewerPlugin, parameters ) {
     "use strict";
 
-    var self = this,
-        kScrollbarPadding = 40,
-        kMinScale = 0.25,
-        kMaxScale = 4.0,
+    var self               = this,
+        kScrollbarPadding  = 40,
+        kMinScale          = 0.25,
+        kMaxScale          = 4.0,
         kDefaultScaleDelta = 1.1,
-        kDefaultScale = 'auto',
-        presentationMode = false,
-        isFullScreen = false,
-        initialized = false,
+        kDefaultScale      = 'auto',
+        presentationMode   = false,
+        isFullScreen       = false,
+        initialized        = false,
         url,
-        viewerElement = document.getElementById('viewer'),
-        canvasContainer = document.getElementById('canvasContainer'),
-        overlayNavigator = document.getElementById('overlayNavigator'),
-        titlebar = document.getElementById('titlebar'),
-        toolbar = document.getElementById('toolbarContainer'),
-        pageSwitcher = document.getElementById('toolbarLeft'),
-        zoomWidget = document.getElementById('toolbarMiddleContainer'),
-        scaleSelector = document.getElementById('scaleSelect'),
-        dialogOverlay = document.getElementById('dialogOverlay'),
-        toolbarRight = document.getElementById('toolbarRight'),
-        aboutDialog,
-        pages = [],
+        viewerElement      = document.getElementById('viewer'),
+        canvasContainer    = document.getElementById('canvasContainer'),
+        overlayNavigator   = document.getElementById('overlayNavigator'),
+        titlebar           = document.getElementById('titlebar'),
+        toolbar            = document.getElementById('toolbarContainer'),
+        pageSwitcher       = document.getElementById('toolbarLeft'),
+        zoomWidget         = document.getElementById('toolbarMiddleContainer'),
+        scaleSelector      = document.getElementById('scaleSelect'),
+        dialogOverlay      = document.getElementById('dialogOverlay'),
+        toolbarRight       = document.getElementById('toolbarRight'),
+        pages              = [],
         currentPage,
         scaleChangeTimer,
         touchTimer,
         toolbarTouchTimer,
-        /**@const*/
-        UI_FADE_DURATION = 5000;
+        UI_FADE_DURATION   = 5000;
 
     function isBlankedOut() {
         return (blanked.style.display === 'block');
     }
 
-    function initializeAboutInformation() {
-        var aboutDialogCentererTable, aboutDialogCentererCell, aboutButton, pluginName, pluginVersion, pluginURL,
-            version;
-
-        version = (String(typeof ViewerJS_version) !== "undefined" ? ViewerJS_version : "From Source");
-        if (viewerPlugin) {
-            pluginName = viewerPlugin.getPluginName();
-            pluginVersion = viewerPlugin.getPluginVersion();
-            pluginURL = viewerPlugin.getPluginURL();
-        }
-
-        // Create dialog
-        aboutDialogCentererTable = document.createElement('div');
-        aboutDialogCentererTable.id = "aboutDialogCentererTable";
-        aboutDialogCentererCell = document.createElement('div');
-        aboutDialogCentererCell.id = "aboutDialogCentererCell";
-        aboutDialog = document.createElement('div');
-        aboutDialog.id = "aboutDialog";
-        aboutDialog.innerHTML =
-            "<h1>ViewerJS</h1>" +
-            "<p>Open Source document viewer for webpages, built with HTML and JavaScript.</p>" +
-            "<p>Learn more and get your own copy on the <a href=\"http://viewerjs.org/\" target=\"_blank\">ViewerJS website</a>.</p>" +
-            (viewerPlugin ? ("<p>Using the <a href = \""+ pluginURL + "\" target=\"_blank\">" + pluginName + "</a> " +
-                            "(<span id = \"pluginVersion\">" + pluginVersion + "</span>) " +
-                            "plugin to show you this document.</p>")
-                         : "") +
-            "<p>Version " + version + "</p>" +
-            "<p>Supported by <a href=\"https://nlnet.nl\" target=\"_blank\"><br><img src=\"images\/nlnet.png\" width=\"160\" height=\"60\" alt=\"NLnet Foundation\"></a></p>" +
-            "<p>Made by <a href=\"http://kogmbh.com\" target=\"_blank\"><br><img src=\"images\/kogmbh.png\" width=\"172\" height=\"40\" alt=\"KO GmbH\"></a></p>" +
-            "<button id = \"aboutDialogCloseButton\" class = \"toolbarButton textButton\">Close</button>";
-        dialogOverlay.appendChild(aboutDialogCentererTable);
-        aboutDialogCentererTable.appendChild(aboutDialogCentererCell);
-        aboutDialogCentererCell.appendChild(aboutDialog);
-
-        // Create button to open dialog that says "ViewerJS"
-        aboutButton = document.createElement('button');
-        aboutButton.id = "about";
-        aboutButton.className = "toolbarButton textButton about";
-        aboutButton.title = "About";
-        aboutButton.innerHTML = "ViewerJS";
-        toolbarRight.appendChild(aboutButton);
-
-        // Attach events to the above
-        aboutButton.addEventListener('click', function () {
-                showAboutDialog();
-        });
-        document.getElementById('aboutDialogCloseButton').addEventListener('click', function () {
-                hideAboutDialog();
-        });
-
-    }
-
-    function showAboutDialog() {
-        dialogOverlay.style.display = "block";
-    }
-
-    function hideAboutDialog() {
-        dialogOverlay.style.display = "none";
-    }
-
-    function selectScaleOption(value) {
+    function selectScaleOption( value ) {
         // Retrieve the options from the zoom level <select> element
-        var options = scaleSelector.options,
+        var options              = scaleSelector.options,
             option,
             predefinedValueFound = false,
             i;
 
-        for (i = 0; i < options.length; i += 1) {
+        for ( i = 0; i < options.length; i += 1 ) {
             option = options[i];
-            if (option.value !== value) {
+            if ( option.value !== value ) {
                 option.selected = false;
                 continue;
             }
-            option.selected = true;
+            option.selected      = true;
             predefinedValueFound = true;
         }
         return predefinedValueFound;
@@ -163,8 +101,8 @@ function Viewer(viewerPlugin, parameters) {
         return viewerPlugin.getPages();
     }
 
-    function setScale(val, resetAutoSettings) {
-        if (val === self.getZoomLevel()) {
+    function setScale( val, resetAutoSettings ) {
+        if ( val === self.getZoomLevel() ) {
             return;
         }
 
@@ -172,7 +110,7 @@ function Viewer(viewerPlugin, parameters) {
 
         var event = document.createEvent('UIEvents');
         event.initUIEvent('scalechange', false, false, window, 0);
-        event.scale = val;
+        event.scale             = val;
         event.resetAutoSettings = resetAutoSettings;
         window.dispatchEvent(event);
     }
@@ -180,86 +118,86 @@ function Viewer(viewerPlugin, parameters) {
     function onScroll() {
         var pageNumber;
 
-        if (viewerPlugin.onScroll) {
+        if ( viewerPlugin.onScroll ) {
             viewerPlugin.onScroll();
         }
-        if (viewerPlugin.getPageInView) {
+        if ( viewerPlugin.getPageInView ) {
             pageNumber = viewerPlugin.getPageInView();
-            if (pageNumber) {
-                currentPage = pageNumber;
+            if ( pageNumber ) {
+                currentPage                                 = pageNumber;
                 document.getElementById('pageNumber').value = pageNumber;
             }
         }
     }
 
-    function delayedRefresh(milliseconds) {
+    function delayedRefresh( milliseconds ) {
         window.clearTimeout(scaleChangeTimer);
         scaleChangeTimer = window.setTimeout(function () {
             onScroll();
         }, milliseconds);
     }
 
-    function parseScale(value, resetAutoSettings) {
+    function parseScale( value, resetAutoSettings ) {
         var scale,
             maxWidth,
             maxHeight;
 
-        if (value === 'custom') {
+        if ( value === 'custom' ) {
             scale = parseFloat(document.getElementById('customScaleOption').textContent) / 100;
         } else {
             scale = parseFloat(value);
         }
 
-        if (scale) {
+        if ( scale ) {
             setScale(scale, true);
             delayedRefresh(300);
             return;
         }
 
-        maxWidth = canvasContainer.clientWidth - kScrollbarPadding;
+        maxWidth  = canvasContainer.clientWidth - kScrollbarPadding;
         maxHeight = canvasContainer.clientHeight - kScrollbarPadding;
 
-        switch (value) {
-        case 'page-actual':
-            setScale(1, resetAutoSettings);
-            break;
-        case 'page-width':
-            viewerPlugin.fitToWidth(maxWidth);
-            break;
-        case 'page-height':
-            viewerPlugin.fitToHeight(maxHeight);
-            break;
-        case 'page-fit':
-            viewerPlugin.fitToPage(maxWidth, maxHeight);
-            break;
-        case 'auto':
-            if (viewerPlugin.isSlideshow()) {
-                viewerPlugin.fitToPage(maxWidth + kScrollbarPadding, maxHeight + kScrollbarPadding);
-            } else {
-                viewerPlugin.fitSmart(maxWidth);
-            }
-            break;
+        switch ( value ) {
+            case 'page-actual':
+                setScale(1, resetAutoSettings);
+                break;
+            case 'page-width':
+                viewerPlugin.fitToWidth(maxWidth);
+                break;
+            case 'page-height':
+                viewerPlugin.fitToHeight(maxHeight);
+                break;
+            case 'page-fit':
+                viewerPlugin.fitToPage(maxWidth, maxHeight);
+                break;
+            case 'auto':
+                if ( viewerPlugin.isSlideshow() ) {
+                    viewerPlugin.fitToPage(maxWidth + kScrollbarPadding, maxHeight + kScrollbarPadding);
+                } else {
+                    viewerPlugin.fitSmart(maxWidth);
+                }
+                break;
         }
 
         selectScaleOption(value);
         delayedRefresh(300);
     }
 
-    function readZoomParameter(zoom) {
+    function readZoomParameter( zoom ) {
         var validZoomStrings = ["auto", "page-actual", "page-width"],
             number;
 
-        if (validZoomStrings.indexOf(zoom) !== -1) {
+        if ( validZoomStrings.indexOf(zoom) !== -1 ) {
             return zoom;
         }
         number = parseFloat(zoom);
-        if (number && kMinScale <= number && number <= kMaxScale) {
+        if ( number && kMinScale <= number && number <= kMaxScale ) {
             return zoom;
         }
         return kDefaultScale;
     }
 
-    function readStartPageParameter(startPage) {
+    function readStartPageParameter( startPage ) {
         var result = parseInt(startPage, 10);
         return isNaN(result) ? 1 : result;
     }
@@ -269,16 +207,15 @@ function Viewer(viewerPlugin, parameters) {
 
         initialScale = readZoomParameter(parameters.zoom);
 
-        url = parameters.documentUrl;
-        document.title = parameters.title;
-        var documentName = document.getElementById('documentName');
+        url                    = parameters.documentUrl;
+        document.title         = parameters.title;
+        var documentName       = document.getElementById('documentName');
         documentName.innerHTML = "";
         documentName.appendChild(documentName.ownerDocument.createTextNode(parameters.title));
 
         viewerPlugin.onLoad = function () {
-            document.getElementById('pluginVersion').innerHTML = viewerPlugin.getPluginVersion();
 
-            if (viewerPlugin.isSlideshow()) {
+            if ( viewerPlugin.isSlideshow() ) {
                 // Slideshow pages should be centered
                 canvasContainer.classList.add("slideshow");
                 // Show page nav controls only for presentations
@@ -287,13 +224,13 @@ function Viewer(viewerPlugin, parameters) {
                 // For text documents, show the zoom widget.
                 zoomWidget.style.visibility = 'visible';
                 // Only show the page switcher widget if the plugin supports page numbers
-                if (viewerPlugin.getPageInView) {
+                if ( viewerPlugin.getPageInView ) {
                     pageSwitcher.style.visibility = 'visible';
                 }
             }
 
-            initialized = true;
-            pages = getPages();
+            initialized                                   = true;
+            pages                                         = getPages();
             document.getElementById('numPages').innerHTML = 'of ' + pages.length;
 
             self.showPage(readStartPageParameter(parameters.startpage));
@@ -303,6 +240,7 @@ function Viewer(viewerPlugin, parameters) {
 
             canvasContainer.onscroll = onScroll;
             delayedRefresh();
+            document.getElementById('loading-document').remove();
         };
 
         viewerPlugin.initialize(canvasContainer, url);
@@ -313,16 +251,16 @@ function Viewer(viewerPlugin, parameters) {
      * shows the last page. If n is less than 1, shows the first page.
      * @return {undefined}
      */
-    this.showPage = function (n) {
-        if (n <= 0) {
+    this.showPage = function ( n ) {
+        if ( n <= 0 ) {
             n = 1;
-        } else if (n > pages.length) {
+        } else if ( n > pages.length ) {
             n = pages.length;
         }
 
         viewerPlugin.showPage(n);
 
-        currentPage = n;
+        currentPage                                 = n;
         document.getElementById('pageNumber').value = currentPage;
     };
 
@@ -348,7 +286,11 @@ function Viewer(viewerPlugin, parameters) {
      */
     this.download = function () {
         var documentUrl = url.split('#')[0];
-        documentUrl += '&contentDispositionType=attachment';
+        if ( documentUrl.indexOf('?') !== -1 ) {
+            documentUrl += '&contentDispositionType=attachment';
+        } else {
+            documentUrl += '?contentDispositionType=attachment';
+        }
         window.open(documentUrl, '_parent');
     };
 
@@ -356,7 +298,7 @@ function Viewer(viewerPlugin, parameters) {
      * Prints the document canvas.
      * @return {undefined}
      */
-    this.printDocument = function() {
+    this.printDocument = function () {
         window.print();
     };
 
@@ -366,30 +308,30 @@ function Viewer(viewerPlugin, parameters) {
      */
     this.toggleFullScreen = function () {
         var elem = viewerElement;
-        if (!isFullScreen) {
-            if (elem.requestFullscreen) {
+        if ( !isFullScreen ) {
+            if ( elem.requestFullscreen ) {
                 elem.requestFullscreen();
-            } else if (elem.mozRequestFullScreen) {
+            } else if ( elem.mozRequestFullScreen ) {
                 elem.mozRequestFullScreen();
-            } else if (elem.webkitRequestFullscreen) {
+            } else if ( elem.webkitRequestFullscreen ) {
                 elem.webkitRequestFullscreen();
-            } else if (elem.webkitRequestFullScreen) {
+            } else if ( elem.webkitRequestFullScreen ) {
                 elem.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
-            } else if (elem.msRequestFullscreen) {
+            } else if ( elem.msRequestFullscreen ) {
                 elem.msRequestFullscreen();
             }
         } else {
-            if (document.exitFullscreen) {
+            if ( document.exitFullscreen ) {
                 document.exitFullscreen();
-            } else if (document.cancelFullScreen) {
+            } else if ( document.cancelFullScreen ) {
                 document.cancelFullScreen();
-            } else if (document.mozCancelFullScreen) {
+            } else if ( document.mozCancelFullScreen ) {
                 document.mozCancelFullScreen();
-            } else if (document.webkitExitFullscreen) {
+            } else if ( document.webkitExitFullscreen ) {
                 document.webkitExitFullscreen();
-            } else if (document.webkitCancelFullScreen) {
+            } else if ( document.webkitCancelFullScreen ) {
                 document.webkitCancelFullScreen();
-            } else if (document.msExitFullscreen) {
+            } else if ( document.msExitFullscreen ) {
                 document.msExitFullscreen();
             }
         }
@@ -402,19 +344,19 @@ function Viewer(viewerPlugin, parameters) {
     this.togglePresentationMode = function () {
         var overlayCloseButton = document.getElementById('overlayCloseButton');
 
-        if (!presentationMode) {
+        if ( !presentationMode ) {
             titlebar.style.display = toolbar.style.display = 'none';
             overlayCloseButton.style.display = 'block';
             canvasContainer.classList.add('presentationMode');
-            canvasContainer.onmousedown = function (event) {
+            canvasContainer.onmousedown   = function ( event ) {
                 event.preventDefault();
             };
-            canvasContainer.oncontextmenu = function (event) {
+            canvasContainer.oncontextmenu = function ( event ) {
                 event.preventDefault();
             };
-            canvasContainer.onmouseup = function (event) {
+            canvasContainer.onmouseup     = function ( event ) {
                 event.preventDefault();
-                if (event.which === 1) {
+                if ( event.which === 1 ) {
                     self.showNextPage();
                 } else {
                     self.showPreviousPage();
@@ -422,15 +364,18 @@ function Viewer(viewerPlugin, parameters) {
             };
             parseScale('page-fit');
         } else {
-            if (isBlankedOut()) {
+            if ( isBlankedOut() ) {
                 leaveBlankOut();
             }
             titlebar.style.display = toolbar.style.display = 'block';
             overlayCloseButton.style.display = 'none';
             canvasContainer.classList.remove('presentationMode');
-            canvasContainer.onmouseup = function () {};
-            canvasContainer.oncontextmenu = function () {};
-            canvasContainer.onmousedown = function () {};
+            canvasContainer.onmouseup     = function () {
+            };
+            canvasContainer.oncontextmenu = function () {
+            };
+            canvasContainer.onmousedown   = function () {
+            };
             parseScale('auto');
         }
 
@@ -450,7 +395,7 @@ function Viewer(viewerPlugin, parameters) {
      * @param {!number} value
      * @return {undefined}
      */
-    this.setZoomLevel = function (value) {
+    this.setZoomLevel = function ( value ) {
         viewerPlugin.setZoomLevel(value);
     };
 
@@ -461,7 +406,7 @@ function Viewer(viewerPlugin, parameters) {
     this.zoomOut = function () {
         // 10 % decrement
         var newScale = (self.getZoomLevel() / kDefaultScaleDelta).toFixed(2);
-        newScale = Math.max(kMinScale, newScale);
+        newScale     = Math.max(kMinScale, newScale);
         parseScale(newScale, true);
     };
 
@@ -472,12 +417,12 @@ function Viewer(viewerPlugin, parameters) {
     this.zoomIn = function () {
         // 10 % increment
         var newScale = (self.getZoomLevel() * kDefaultScaleDelta).toFixed(2);
-        newScale = Math.min(kMaxScale, newScale);
+        newScale     = Math.min(kMaxScale, newScale);
         parseScale(newScale, true);
     };
 
     function cancelPresentationMode() {
-        if (presentationMode && !isFullScreen) {
+        if ( presentationMode && !isFullScreen ) {
             self.togglePresentationMode();
         }
     }
@@ -488,7 +433,7 @@ function Viewer(viewerPlugin, parameters) {
     }
 
     function showOverlayNavigator() {
-        if (presentationMode || viewerPlugin.isSlideshow()) {
+        if ( presentationMode || viewerPlugin.isSlideshow() ) {
             overlayNavigator.className = 'viewer-touched';
             window.clearTimeout(touchTimer);
             touchTimer = window.setTimeout(function () {
@@ -514,15 +459,15 @@ function Viewer(viewerPlugin, parameters) {
     }
 
     function toggleToolbars() {
-        if (titlebar.classList.contains('viewer-touched')) {
+        if ( titlebar.classList.contains('viewer-touched') ) {
             hideToolbars();
         } else {
             showToolbars();
         }
     }
 
-    function blankOut(value) {
-        blanked.style.display = 'block';
+    function blankOut( value ) {
+        blanked.style.display         = 'block';
         blanked.style.backgroundColor = value;
         hideToolbars();
     }
@@ -532,7 +477,7 @@ function Viewer(viewerPlugin, parameters) {
         toggleToolbars();
     }
 
-    function setButtonClickHandler(buttonId, handler) {
+    function setButtonClickHandler( buttonId, handler ) {
         var button = document.getElementById(buttonId);
 
         button.addEventListener('click', function () {
@@ -543,13 +488,11 @@ function Viewer(viewerPlugin, parameters) {
 
     function init() {
 
-        initializeAboutInformation();
-
-        if (viewerPlugin) {
+        if ( viewerPlugin ) {
             self.initialize();
 
-            if (!(document.exitFullscreen || document.cancelFullScreen || document.mozCancelFullScreen || document.webkitExitFullscreen || document.webkitCancelFullScreen || document.msExitFullscreen)) {
-                document.getElementById('fullscreen').style.visibility = 'hidden';
+            if ( !(document.exitFullscreen || document.cancelFullScreen || document.mozCancelFullScreen || document.webkitExitFullscreen || document.webkitCancelFullScreen || document.msExitFullscreen) ) {
+                document.getElementById('fullscreen').style.visibility   = 'hidden';
                 document.getElementById('presentation').style.visibility = 'hidden';
             }
 
@@ -557,7 +500,7 @@ function Viewer(viewerPlugin, parameters) {
             setButtonClickHandler('fullscreen', self.toggleFullScreen);
             setButtonClickHandler('print', self.printDocument);
             setButtonClickHandler('presentation', function () {
-                if (!isFullScreen) {
+                if ( !isFullScreen ) {
                     self.toggleFullScreen();
                 }
                 self.togglePresentationMode();
@@ -593,84 +536,84 @@ function Viewer(viewerPlugin, parameters) {
             titlebar.addEventListener('click', showToolbars);
             toolbar.addEventListener('click', showToolbars);
 
-            window.addEventListener('scalechange', function (evt) {
-                var customScaleOption = document.getElementById('customScaleOption'),
+            window.addEventListener('scalechange', function ( evt ) {
+                var customScaleOption    = document.getElementById('customScaleOption'),
                     predefinedValueFound = selectScaleOption(String(evt.scale));
 
                 customScaleOption.selected = false;
 
-                if (!predefinedValueFound) {
+                if ( !predefinedValueFound ) {
                     customScaleOption.textContent = Math.round(evt.scale * 10000) / 100 + '%';
-                    customScaleOption.selected = true;
+                    customScaleOption.selected    = true;
                 }
             }, true);
 
             window.addEventListener('resize', function () {
-                if (initialized &&
-                          (document.getElementById('pageWidthOption').selected ||
-                          document.getElementById('pageAutoOption').selected)) {
+                if ( initialized &&
+                    (document.getElementById('pageWidthOption').selected ||
+                    document.getElementById('pageAutoOption').selected) ) {
                     parseScale(document.getElementById('scaleSelect').value);
                 }
                 showOverlayNavigator();
             });
 
-            window.addEventListener('keydown', function (evt) {
-                var key = evt.keyCode,
+            window.addEventListener('keydown', function ( evt ) {
+                var key      = evt.keyCode,
                     shiftKey = evt.shiftKey;
 
                 // blanked-out mode?
-                if (isBlankedOut()) {
-                    switch (key) {
-                    case 16: // Shift
-                    case 17: // Ctrl
-                    case 18: // Alt
-                    case 91: // LeftMeta
-                    case 93: // RightMeta
-                    case 224: // MetaInMozilla
-                    case 225: // AltGr
-                        // ignore modifier keys alone
-                        break;
-                    default:
-                        leaveBlankOut();
-                        break;
+                if ( isBlankedOut() ) {
+                    switch ( key ) {
+                        case 16: // Shift
+                        case 17: // Ctrl
+                        case 18: // Alt
+                        case 91: // LeftMeta
+                        case 93: // RightMeta
+                        case 224: // MetaInMozilla
+                        case 225: // AltGr
+                            // ignore modifier keys alone
+                            break;
+                        default:
+                            leaveBlankOut();
+                            break;
                     }
                 } else {
-                    switch (key) {
-                    case 8: // backspace
-                    case 33: // pageUp
-                    case 37: // left arrow
-                    case 38: // up arrow
-                    case 80: // key 'p'
-                        self.showPreviousPage();
-                        break;
-                    case 13: // enter
-                    case 34: // pageDown
-                    case 39: // right arrow
-                    case 40: // down arrow
-                    case 78: // key 'n'
-                        self.showNextPage();
-                        break;
-                    case 32: // space
-                        shiftKey ? self.showPreviousPage() : self.showNextPage();
-                        break;
-                    case 66:  // key 'b' blanks screen (to black) or returns to the document
-                    case 190: // and so does the key '.' (dot)
-                        if (presentationMode) {
-                            blankOut('#000');
-                        }
-                        break;
-                    case 87:  // key 'w' blanks page (to white) or returns to the document
-                    case 188: // and so does the key ',' (comma)
-                        if (presentationMode) {
-                            blankOut('#FFF');
-                        }
-                        break;
-                    case 36: // key 'Home' goes to first page
-                        self.showPage(1);
-                        break;
-                    case 35: // key 'End' goes to last page
-                        self.showPage(pages.length);
-                        break;
+                    switch ( key ) {
+                        case 8: // backspace
+                        case 33: // pageUp
+                        case 37: // left arrow
+                        case 38: // up arrow
+                        case 80: // key 'p'
+                            self.showPreviousPage();
+                            break;
+                        case 13: // enter
+                        case 34: // pageDown
+                        case 39: // right arrow
+                        case 40: // down arrow
+                        case 78: // key 'n'
+                            self.showNextPage();
+                            break;
+                        case 32: // space
+                            shiftKey ? self.showPreviousPage() : self.showNextPage();
+                            break;
+                        case 66:  // key 'b' blanks screen (to black) or returns to the document
+                        case 190: // and so does the key '.' (dot)
+                            if ( presentationMode ) {
+                                blankOut('#000');
+                            }
+                            break;
+                        case 87:  // key 'w' blanks page (to white) or returns to the document
+                        case 188: // and so does the key ',' (comma)
+                            if ( presentationMode ) {
+                                blankOut('#FFF');
+                            }
+                            break;
+                        case 36: // key 'Home' goes to first page
+                            self.showPage(1);
+                            break;
+                        case 35: // key 'End' goes to last page
+                            self.showPage(pages.length);
+                            break;
                     }
                 }
             });

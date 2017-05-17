@@ -9,10 +9,11 @@ app.listen(81);
 
 console.log(`Listening on port 81.
  Try one of the following tests:
-  - http://localhost/index.html#/files/pdf-test.pdf
-  - http://localhost/index.html#/files/small.mp4
-  - http://localhost/index.html#/files/small.webm
-  - http://localhost/index.html#/files/test.png
-  - http://localhost/index.html#/files/text.txt
+  - http://localhost:81/index.html#/files/pdf-test.pdf
+  - http://localhost:81/index.html#/files/small.mp4
+  - http://localhost:81/index.html#/files/small.webm
+  - http://localhost:81/index.html#/files/test.png
+  - http://localhost:81/index.html#/files/text.txt
+  - http://localhost:81/index.html#/files/unknown.zfx
   
   `);
