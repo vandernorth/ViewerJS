@@ -240,7 +240,9 @@ function Viewer( viewerPlugin, parameters ) {
 
             canvasContainer.onscroll = onScroll;
             delayedRefresh();
-            document.getElementById('loading-document').remove();
+            // Doesn't work in older browsers: document.getElementById('loading-document').remove();
+            var loading = document.getElementById('loading-document');
+            loading.parentNode.removeChild(loading);
         };
 
         viewerPlugin.initialize(canvasContainer, url);

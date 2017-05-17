@@ -1,5 +1,5 @@
-var pdfjs_version    = '1.4.265',
-    ViewerJS_version = '0.6.5';
+var pdfjs_version    = '1.8.355',
+    ViewerJS_version = '0.6.6';
 
 function loadPlugin( pluginName, callback ) {
     "use strict";

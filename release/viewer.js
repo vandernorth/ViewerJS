@@ -1,5 +1,5 @@
-var pdfjs_version    = '1.4.265',
-    ViewerJS_version = '0.6.5';
+var pdfjs_version    = '1.8.355',
+    ViewerJS_version = '0.6.6';
 
 function loadPlugin( pluginName, callback ) {
     "use strict";
@@ -252,7 +252,9 @@ function Viewer( viewerPlugin, parameters ) {
 
             canvasContainer.onscroll = onScroll;
             delayedRefresh();
-            document.getElementById('loading-document').remove();
+            // Doesn't work in older browsers: document.getElementById('loading-document').remove();
+            var loading = document.getElementById('loading-document');
+            loading.parentNode.removeChild(loading);
         };
 
         viewerPlugin.initialize(canvasContainer, url);
