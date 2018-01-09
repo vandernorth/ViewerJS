@@ -10,7 +10,7 @@ const shell      = require('shelljs'),
       file       = filename => {
           return path.resolve(sourceDir, filename)
       };
-
+shell.mkdir("release");
 shell.cp(path.resolve(sourceDir, 'index.html'), releaseDir);
 shell.cp(path.resolve(sourceDir, 'example.local.css'), releaseDir);
 shell.cp(path.resolve(sourcePdf, './build/pdf.js'), releaseDir);

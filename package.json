@@ -23,7 +23,8 @@
   ],
   "scripts"        : {
     "build": "node ./build/build.js",
-    "test" : "node ./test/server.js"
+    "test" : "node ./test/server.js",
+    "postinstall": "npm run build"
   },
   "main"           : "./release/index.html",
   "repository"     : {
@@ -31,7 +32,7 @@
     "url" : "git://github.com/vandernorth/ViewerJS.git"
   },
   "dependencies"   : {
-    "pdfjs-dist" : "1.8",
+    "pdfjs-dist" : "^2.0",
     "node-webodf": "git://github.com/vandernorth/WebODF.git"
   },
   "devDependencies": {

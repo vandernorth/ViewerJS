@@ -37,12 +37,9 @@ function PDFViewerPlugin() {
     }
 
     function init( callback ) {
-
-        loadScript('./compatibility.js', function () {
-            loadScript('./pdf.js', callback);
-            loadScript('./ui_utils.js');
-            loadScript('./text_layer_builder.js');
-        });
+        loadScript('./pdf.js', callback);
+        loadScript('./ui_utils.js');
+        loadScript('./text_layer_builder.js');
 
         //var pluginCSS;
         //pluginCSS = /**@type{!HTMLStyleElement}*/(document.createElementNS(document.head.namespaceURI, 'style'));
@@ -150,11 +147,20 @@ function PDFViewerPlugin() {
             domPage   = getDomPage(page);
             textLayer = getPageText(page);
             canvas    = domPage.getElementsByTagName('canvas')[0];
+            var viewport = page.getViewport(scale);
+            var w = viewport.width;
+            var h = viewport.height;
+            var ratio = getPixelRatio();
+            canvas.width = w * ratio;
+            canvas.height = h * ratio;
+            canvas.style.width = w + "px";
+            canvas.style.height = h + "px";
+            canvas.getContext('2d').setTransform(ratio, 0, 0, ratio, 0, 0);
 
             page.render({
                 canvasContext: canvas.getContext('2d'),
                 textLayer:     textLayer,
-                viewport:      page.getViewport(scale)
+                viewport:      viewport
             }).promise.then(function () {
                 if ( getRenderingStatus(page) === RENDERING.RUNNINGOUTDATED ) {
                     // restart
@@ -179,6 +185,18 @@ function PDFViewerPlugin() {
         self.showPage(1);
         self.onLoad();
     }
+
+    function getPixelRatio() {
+        var ctx = document.createElement("canvas").getContext("2d"),
+            dpr = window.devicePixelRatio || 1,
+            bsr = ctx.webkitBackingStorePixelRatio ||
+                  ctx.mozBackingStorePixelRatio ||
+                  ctx.msBackingStorePixelRatio ||
+                  ctx.oBackingStorePixelRatio ||
+                  ctx.backingStorePixelRatio || 1;
+    
+        return dpr / bsr;
+    };
 
     function createPage( page ) {
         var pageNumber,
