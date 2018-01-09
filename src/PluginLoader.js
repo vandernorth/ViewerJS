@@ -282,32 +282,21 @@
             }
 
             parameters.documentUrl = documentUrl;
+            pluginData = estimateTypeByFileExtension("pdf");
 
-            // trust the server most
-            estimateTypeByHeaderContentType(documentUrl, function ( pluginData ) {
-                if ( !pluginData ) {
-                    if ( parameters.type ) {
-                        pluginData = estimateTypeByFileExtension(parameters.type);
-                    } else {
-                        // last ressort: try to guess from path
-                        pluginData = estimateTypeByFileExtensionFromPath(documentUrl);
-                    }
-                }
-
-                if ( pluginData ) {
-                    if ( String(typeof loadPlugin) !== "undefined" ) {
-                        loadPlugin(pluginData.path, function () {
-                            Plugin = pluginData.getClass();
-                            viewer = new Viewer(new Plugin(), parameters);
-                        });
-                    } else {
+            if ( pluginData ) {
+                if ( String(typeof loadPlugin) !== "undefined" ) {
+                    loadPlugin(pluginData.path, function () {
                         Plugin = pluginData.getClass();
                         viewer = new Viewer(new Plugin(), parameters);
-                    }
+                    });
                 } else {
-                    viewer = new Viewer();
+                    Plugin = pluginData.getClass();
+                    viewer = new Viewer(new Plugin(), parameters);
                 }
-            });
+            } else {
+                viewer = new Viewer();
+            }
         } else {
             viewer = new Viewer();
         }
