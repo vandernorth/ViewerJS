@@ -5,7 +5,7 @@ const express = require('express'),
 
 app.use('/', express.static('./release'));
 app.use('/files', express.static('./test/files'));
-app.listen(81);
+app.listen(8181);
 
 console.log(`Listening on port 81.
  Try one of the following tests:

@@ -665,207 +665,6 @@ function Viewer( viewerPlugin, parameters ) {
 (function () {
     "use strict";
 
-    var css,
-        pluginRegistry  = [
-            (function () {
-                var odfMimetypes      = [
-                    'application/vnd.oasis.opendocument.text',
-                    'application/vnd.oasis.opendocument.text-flat-xml',
-                    'application/vnd.oasis.opendocument.text-template',
-                    'application/vnd.oasis.opendocument.presentation',
-                    'application/vnd.oasis.opendocument.presentation-flat-xml',
-                    'application/vnd.oasis.opendocument.presentation-template',
-                    'application/vnd.oasis.opendocument.spreadsheet',
-                    'application/vnd.oasis.opendocument.spreadsheet-flat-xml',
-                    'application/vnd.oasis.opendocument.spreadsheet-template'];
-                var odfFileExtensions = [
-                    'odt',
-                    'fodt',
-                    'ott',
-                    'odp',
-                    'fodp',
-                    'otp',
-                    'ods',
-                    'fods',
-                    'ots'];
-
-                return {
-                    supportsMimetype:      function ( mimetype ) {
-                        return (odfMimetypes.indexOf(mimetype) !== -1);
-                    },
-                    supportsFileExtension: function ( extension ) {
-                        return (odfFileExtensions.indexOf(extension) !== -1);
-                    },
-                    path:                  "./ODFViewerPlugin",
-                    getClass:              function () {
-                        return ODFViewerPlugin;
-                    }
-                };
-            }()),
-            {
-                supportsMimetype:      function ( mimetype ) {
-                    return (mimetype === 'application/pdf');
-                },
-                supportsFileExtension: function ( extension ) {
-                    return (extension === 'pdf');
-                },
-                path:                  "./PDFViewerPlugin",
-                getClass:              function () {
-                    return PDFViewerPlugin;
-                }
-            },
-            (function () {
-                var imageMimetypes      = [
-                    'image/jpeg',
-                    'image/pjpeg',
-                    'image/gif',
-                    'image/png',
-                    'image/bmp'];
-                var imageFileExtensions = [
-                    'png',
-                    'jpg',
-                    'jpeg',
-                    'gif',
-                    'bmp'];
-
-                return {
-                    supportsMimetype:      function ( mimetype ) {
-                        return (imageMimetypes.indexOf(mimetype) !== -1);
-                    },
-                    supportsFileExtension: function ( extension ) {
-                        return (imageFileExtensions.indexOf(extension) !== -1);
-                    },
-                    path:                  "./ImageViewerPlugin",
-                    getClass:              function () {
-                        return ImageViewerPlugin;
-                    }
-                };
-            }()),
-            (function () {
-                var multimediaMimetypes      = [
-                    'video/mp4',
-                    'video/ogg',
-                    'video/webm',
-                    'audio/aac',
-                    'audio/mp4',
-                    'audio/mpeg',
-                    'audio/ogg',
-                    'audio/wav',
-                    'audio/webm'];
-                var multimediaFileExtensions = [
-                    'aac',
-                    'mp4',
-                    'm4a',
-                    'mp3',
-                    'mpg',
-                    'mpeg',
-                    'ogg',
-                    'wav',
-                    'webm',
-                    'm4v',
-                    'ogv',
-                    'oga',
-                    'mp1',
-                    'mp2'];
-
-                return {
-                    supportsMimetype:      function ( mimetype ) {
-                        return (multimediaMimetypes.indexOf(mimetype) !== -1);
-                    },
-                    supportsFileExtension: function ( extension ) {
-                        return (multimediaFileExtensions.indexOf(extension) !== -1);
-                    },
-                    path:                  "./MultimediaViewerPlugin",
-                    getClass:              function () {
-                        return MultimediaViewerPlugin;
-                    }
-                };
-            }())
-        ],
-        unknownFileType = {
-            supportsMimetype:      function () {
-                return true;
-            },
-            supportsFileExtension: function () {
-                return true;
-            },
-            path:                  "./UnknownFilePlugin",
-            getClass:              function () {
-                return UnknownFilePlugin;
-            }
-        };
-
-    function estimateTypeByHeaderContentType( documentUrl, cb ) {
-        var xhr                = new XMLHttpRequest();
-        xhr.onreadystatechange = function () {
-            var mimetype, matchingPluginData;
-            if ( xhr.readyState === 4 ) {
-                if ( (xhr.status >= 200 && xhr.status < 300) || xhr.status === 0 ) {
-                    mimetype = xhr.getResponseHeader('content-type');
-
-                    if ( mimetype ) {
-                        pluginRegistry.some(function ( pluginData ) {
-                            if ( pluginData.supportsMimetype(mimetype) ) {
-                                matchingPluginData = pluginData;
-                                console.log('Found plugin by mimetype and xhr head: ' + mimetype);
-                                // store the mimetype globally
-                                window.mimetype = mimetype;
-                                return true;
-                            }
-                            return false;
-                        });
-                    }
-                }
-                if ( !matchingPluginData ) {
-                    matchingPluginData = unknownFileType;
-                }
-                cb(matchingPluginData);
-            }
-        };
-        xhr.open("HEAD", documentUrl, true);
-        xhr.send();
-    }
-
-    function doEstimateTypeByFileExtension( extension ) {
-        var matchingPluginData;
-
-        pluginRegistry.some(function ( pluginData ) {
-            if ( pluginData.supportsFileExtension(extension) ) {
-                matchingPluginData = pluginData;
-                return true;
-            }
-            return false;
-        });
-
-        return matchingPluginData;
-    }
-
-    function estimateTypeByFileExtension( extension ) {
-        var matchingPluginData = doEstimateTypeByFileExtension(extension)
-
-        if ( matchingPluginData ) {
-            console.log('Found plugin by parameter type: ' + extension);
-
-            // this is needed for the Multimedia Plugin
-            window.mimetype = getMimeByExtension(extension);
-        }
-
-        return matchingPluginData;
-    }
-
-    function estimateTypeByFileExtensionFromPath( documentUrl ) {
-        // See to get any path from the url and grep what could be a file extension
-        var documentPath       = documentUrl.split('?')[0],
-            extension          = documentPath.split('.').pop(),
-            matchingPluginData = doEstimateTypeByFileExtension(extension)
-
-        if ( matchingPluginData ) {
-            console.log('Found plugin by file extension from path: ' + extension);
-        }
-
-        return matchingPluginData;
-    }
-
     function parseSearchParameters( location ) {
         var parameters = {},
             search     = location.search || "?";
@@ -883,30 +682,6 @@ function Viewer( viewerPlugin, parameters ) {
         return parameters;
     }
 
-    function getMimeByExtension( ext ) {
-        var extToMimes = {
-            'aac':  'audio/aac',
-            'mp4':  'video/mp4',
-            'm4a':  'audio/mp4',
-            'mp3':  'audio/mpeg',
-            'mpg':  'video/mpeg',
-            'mpeg': 'video/mpeg',
-            'ogg':  'video/ogg',
-            'wav':  'audio/wav',
-            'webm': 'video/webm',
-            'm4v':  'video/mp4',
-            'ogv':  'video/ogg',
-            'oga':  'audio/ogg',
-            'mp1':  'audio/mpeg',
-            'mp2':  'audio/mpeg'
-        };
-
-        if ( extToMimes.hasOwnProperty(ext) ) {
-            return extToMimes[ext];
-        }
-        return false;
-    }
-
     window.onload = function () {
         var viewer,
             documentUrl = document.location.hash.substring(1),
@@ -921,31 +696,16 @@ function Viewer( viewerPlugin, parameters ) {
 
             parameters.documentUrl = documentUrl;
 
-            // trust the server most
-            estimateTypeByHeaderContentType(documentUrl, function ( pluginData ) {
-                if ( !pluginData ) {
-                    if ( parameters.type ) {
-                        pluginData = estimateTypeByFileExtension(parameters.type);
-                    } else {
-                        // last ressort: try to guess from path
-                        pluginData = estimateTypeByFileExtensionFromPath(documentUrl);
-                    }
-                }
-
-                if ( pluginData ) {
-                    if ( String(typeof loadPlugin) !== "undefined" ) {
-                        loadPlugin(pluginData.path, function () {
-                            Plugin = pluginData.getClass();
-                            viewer = new Viewer(new Plugin(), parameters);
-                        });
-                    } else {
-                        Plugin = pluginData.getClass();
-                        viewer = new Viewer(new Plugin(), parameters);
-                    }
-                } else {
-                    viewer = new Viewer();
-                }
-            });
+            const pluginData = require("./PDFViewerPlugin");            
+            if ( String(typeof loadPlugin) !== "undefined" ) {
+                loadPlugin(pluginData.path, function () {
+                    Plugin = pluginData.getClass();
+                    viewer = new Viewer(new Plugin(), parameters);
+                });
+            } else {
+                Plugin = pluginData.getClass();
+                viewer = new Viewer(new Plugin(), parameters);
+            }
         } else {
             viewer = new Viewer();
         }
