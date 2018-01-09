@@ -23,7 +23,8 @@
   ],
   "scripts"        : {
     "build": "node ./build/build.js",
-    "test" : "node ./test/server.js"
+    "test" : "node ./test/server.js",
+    "postinstall": "npm run build"
   },
   "main"           : "./release/index.html",
   "repository"     : {
