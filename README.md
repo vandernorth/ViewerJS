@@ -1,4 +1,9 @@
-# ViewerJS for node
+# ViewerJS for node / Dissident version
+
+## Dissident changes
+Compared to the previous fork (https://github.com/vandernorth/ViewerJS):
+-- Only keep the pdf viewer
+-- Remove the matching part to enhance performance
 
 ## Changes
 Compared to the original (http://viewerjs.org/) this fork:
