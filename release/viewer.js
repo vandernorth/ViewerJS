@@ -696,32 +696,17 @@ function Viewer( viewerPlugin, parameters ) {
 
             parameters.documentUrl = documentUrl;
 
-            const pluginData = require("./PDFViewerPlugin");            
             if ( String(typeof loadPlugin) !== "undefined" ) {
-                loadPlugin(pluginData.path, function () {
-                    Plugin = pluginData.getClass();
+                loadPlugin("./PDFViewerPlugin", function () {
+                    Plugin = PDFViewerPlugin;
                     viewer = new Viewer(new Plugin(), parameters);
                 });
             } else {
-                Plugin = pluginData.getClass();
+                Plugin = PDFViewerPlugin;
                 viewer = new Viewer(new Plugin(), parameters);
             }
         } else {
             viewer = new Viewer();
         }
     };
-
-    /*css = (document.createElementNS(document.head.namespaceURI, 'style'));
-     css.setAttribute('media', 'screen');
-     css.setAttribute('type', 'text/css');
-     css.appendChild(document.createTextNode(viewer_css));
-     document.head.appendChild(css);
-
-     css = (document.createElementNS(document.head.namespaceURI, 'style'));
-     css.setAttribute('media', 'only screen and (max-device-width: 800px) and (max-device-height: 800px)');
-     css.setAttribute('type', 'text/css');
-     css.setAttribute('viewerTouch', '1');
-     css.appendChild(document.createTextNode(viewerTouch_css));
-     document.head.appendChild(css);
-     */
 }());
